@@ -1,0 +1,125 @@
+/* палитра и токены */
+:root {
+  --bg: #e9dccf; /* светло-бежевый фон секции */
+  --ink: #1b1b1b; /* основной текст */
+  --muted: #3c3c3c; /* вторичный текст */
+  --brand: #b28a48; /* золото для кнопки */
+  --radius-xl: 18px; /* скругления */
+  --maxw: 1200px;
+}
+
+.hero {
+  background: var(--bg);
+  padding: 56px 24px 72px;
+  color: var(--ink);
+  font-family: "Hind Siliguri", system-ui, -apple-system, sans-serif;
+}
+.hero__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr; /* чуть больше места слева под текст */
+  gap: 48px;
+  align-items: center;
+}
+
+/* левая колонка */
+.hero__title {
+  font-weight: 800; /* как на макете — жирный */
+  font-size: clamp(40px, 6vw, 84px); /* адаптивный размер */
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  margin: 0 0 20px;
+}
+.hero__subtitle {
+  font-weight: 600;
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.2;
+  margin: 0 0 18px;
+}
+.hero__desc {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 56ch; /* комфортная ширина текста */
+  margin: 0 0 24px;
+}
+
+/* кнопки */
+.btn {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: transform 0.06s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--primary {
+  background: var(--brand);
+  color: #fff;
+}
+.btn--primary:hover {
+  filter: brightness(0.95);
+}
+
+.btn--ghost {
+  margin-left: 14px;
+  background: #f3eadf;
+  border-color: #d9c9b2;
+  color: var(--ink);
+}
+.btn--ghost:hover {
+  background: #efe2d1;
+}
+
+.hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* правая колонка с картинкой */
+.hero__right {
+  display: flex;
+  justify-content: center;
+}
+.hero__image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-xl);
+  display: block;
+  object-fit: cover;
+  /* лёгкая тень, как на скрине */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* адаптив */
+@media (max-width: 1024px) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .hero__right {
+    order: 2;
+  }
+  .hero__left {
+    order: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 10px 14px;
+  }
+  .hero {
+    padding: 40px 16px 56px;
+  }
+}

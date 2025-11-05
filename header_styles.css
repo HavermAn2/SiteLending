@@ -1,0 +1,213 @@
+* {
+  background-color: #ebe1d8;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Hind Siliguri", sans-serif;
+  font-size: 16px;
+} /*  -----------------Header------------------- */
+.site-header .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center; /* выровнять по вертикали с иконкой */
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap; /* чтобы строки не переносились */
+}
+
+.brand__icon {
+  width: 70px; /* подгони по макету */
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column; /* две строки вертикально */
+  line-height: 1.1;
+}
+
+.brand__title {
+  color: #000000;
+}
+
+.brand__tagline {
+  font-family: "Hind Siliguri", sans-serif;
+  font-weight: 400;
+
+  color: #000000;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+.nav {
+  margin: 0 auto;
+}
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+.nav-list a,
+.nav-list .more {
+  text-decoration: none;
+  color: #222;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.nav-list li {
+  font-size: 16px;
+}
+.btn--get-in-touch {
+  padding: 10px 16px;
+  border-radius: 15px;
+  background: #d0b282;
+  color: #000000;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .site-header .container {
+    flex-wrap: wrap;
+  }
+  .nav {
+    order: 3;
+    width: 100%;
+  }
+  .nav-list {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+/*  -----------------Hero------------------- */
+
+.hero {
+  padding: 56px 24px 72px;
+}
+.hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+.hero__left {
+  flex: 0 1 560px;
+  max-width: 560px;
+}
+.hero__right {
+  flex: 0 0 auto;
+}
+.hero__image {
+  width: clamp(360px, 38vw, 620px);
+  border-radius: 30px;
+  object-fit: cover;
+}
+
+/* типографика (адаптивна через clamp, уже хорошо для планшетов) */
+.hero__title {
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 100px);
+  line-height: 1.05;
+  margin: 0 0 20px;
+}
+.hero__subtitle {
+  font-weight: 500;
+  font-size: clamp(20px, 2.2vw, 36px);
+  margin: 0 0 18px;
+}
+.hero__desc {
+  color: #3c3c3c;
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 56ch;
+  margin: 0 0 24px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 25px;
+  text-decoration: none;
+}
+.btn--primary {
+  background: #d0b282;
+  color: #000000;
+}
+.btn--ghost {
+  background: #f3eadf;
+  border: 1px solid #d0b282;
+  color: #000000;
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    padding: 40px 16px 56px;
+  }
+  .hero__inner {
+    flex-direction: column;
+    gap: 28px;
+  }
+  .hero__left {
+    max-width: 720px;
+    width: 100%;
+    flex: 0 1 auto;
+  }
+  .hero__right {
+    max-width: 720px;
+    width: 100%;
+    flex: 0 0 auto;
+  }
+  .hero__image {
+    width: 100%;
+  } /* фото на всю ширину блока */
+  .hero__desc {
+    max-width: 80ch;
+  } /* можно дать тексту подышать */
+}
+
+/* телефоны */
+@media (max-width: 600px) {
+  .hero {
+    padding: 28px 14px 40px;
+  }
+  .hero__title {
+    font-size: clamp(32px, 10vw, 44px);
+    margin-bottom: 12px;
+  }
+  .hero__subtitle {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  .hero__desc {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .hero__image {
+    border-radius: 14px;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .btn {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}
