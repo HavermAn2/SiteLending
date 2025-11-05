@@ -485,3 +485,128 @@
     width: 100%;
   }
 }
+/*===========About-Section===========*/
+.about {
+  padding: 28px 14px 40px;
+}
+.profile {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 36px;
+  align-items: center;
+}
+.profile-photo {
+  position: relative;
+  justify-self: center;
+}
+.about__photo {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.about__badge {
+  position: absolute;
+  right: -100px;
+  bottom: 20px;
+  background: #b58948;
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 14px;
+  line-height: 1.1;
+  font-size: 14px;
+  text-align: center;
+}
+.about__name {
+  margin: 0 0 6px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: clamp(20px, 2.8vw, 28px);
+}
+.about__alias {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: clamp(28px, 4.8vw, 40px);
+  letter-spacing: 0.01em;
+}
+.about__text {
+  margin: 0 0 18px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 56ch;
+  text-wrap: pretty; /* мягкие переносы, поддерживается в современных браузерах */
+}
+
+/* Статистика */
+.about__stats {
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 0;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.stat {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.stat__value {
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 6px;
+  background: #fff;
+}
+.stat__label {
+  color: var(--muted);
+  font-size: 13px;
+  background: #fff;
+}
+@media (max-width: 720px) {
+  .profile {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .profile-photo {
+    order: 1;
+  }
+  .about-content {
+    order: 2;
+    text-align: center;
+  }
+  .about__text {
+    margin-inline: auto;
+  }
+  .about__stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .about__badge {
+    right: 0;
+    bottom: 10px;
+    transform: translateX(18px);
+  }
+}
+
+@media (max-width: 600px) {
+  .about {
+    padding: 36px 14px;
+  }
+  .about__photo {
+    width: 240px;
+    height: 240px;
+  }
+  .about__stats {
+    grid-template-columns: 1fr;
+  } /* по одной карточке */
+  .about__badge {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+}
