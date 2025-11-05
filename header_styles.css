@@ -7,7 +7,7 @@
   font-size: 16px;
 } /*  -----------------Header------------------- */
 .site-header .container {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 12px 20px;
   display: flex;
@@ -95,7 +95,7 @@
 /*  -----------------Hero------------------- */
 
 .hero {
-  padding: 56px 24px 72px;
+  padding: 56px 16px 32px;
 }
 .hero__inner {
   max-width: 1200px;
@@ -180,7 +180,7 @@
 }
 
 /* телефоны */
-@media (max-width: 600px) {
+@media (max-width: 720px) {
   .hero {
     padding: 28px 14px 40px;
   }
@@ -209,5 +209,279 @@
   .btn {
     padding: 10px 14px;
     font-size: 14px;
+  }
+}
+/* ---------------------------Music --------------------------*/
+.music {
+  padding: 56px 16px 32px; /* сверху больше, снизу меньше */
+}
+.music__inner {
+  max-width: 920px; /* ограничиваем строку */
+  margin: 0 auto;
+  text-align: center; /* центрируем заголовок и лид */
+}
+.music__title {
+  font-family: "Hind Siliguri", sans-serif;
+  font-weight: 600;
+  font-size: clamp(28px, 4.5vw, 48px);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  margin: 0 0 12px;
+}
+.music__lead {
+  color: #000000;
+  font-size: clamp(14px, 1.8vw, 16px);
+  font-weight: 400;
+  line-height: 1.7;
+  max-width: 70ch; /* комфортная длина строки */
+  margin: 0 auto 24px;
+  opacity: 0.95;
+}
+@media (max-width: 720px) {
+  .music {
+    padding: 40px 14px 24px;
+  }
+}
+
+/*===================================================*/
+
+.track {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background-color: #d9cfc2;
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: flex-start;
+}
+.track__title {
+  font-weight: 400;
+  font-size: clamp(28px, 4.5vw, 48px);
+}
+.track__meta {
+  font-weight: 400;
+  font-size: clamp(14px, 2.2vw, 24px);
+}
+.track__body * {
+  background-color: #d9cfc2;
+}
+:root {
+  /* подгони под свою палитру */
+  --track-bg: #575757; /* фон дорожки */
+  --track-fill: #6b6b6b; /* линия прогресса */
+  --thumb: #575757; /* кружок-ползунок и иконки */
+  --buffer: #9f9a93; /* буфер (серее) */
+  --text: #1b1b1b; /* цвет времени */
+}
+
+/* базовая раскладка без панели */
+/* .player--slim {
+  display: flex;
+  gap: 14px;
+  background: transparent;
+  padding: 0;
+  min-width: 0;
+  font: 14px/1.2 "Hind Siliguri", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background-color: #d9cfc2;
+}
+
+/* Play: треугольник / пауза */
+/* .player--slim .pl-btn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  flex: 0 0 22px;
+}
+.player--slim .pl-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-left: 10px solid var(--thumb);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+.player--slim .pl-btn[data-state="playing"]::before {
+  width: 12px;
+  height: 12px;
+  border: none;
+  background: linear-gradient(var(--thumb), var(--thumb)) left/4px 12px
+      no-repeat,
+    linear-gradient(var(--thumb), var(--thumb)) right/4px 12px no-repeat;
+} */
+
+/* .player--slim .pl-timeline {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.player--slim .pl-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  transform: translateY(-1px);
+  background: var(--track-bg);
+}
+.player--slim .pl-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--thumb);
+  border: none;
+  margin-top: -1px;
+}
+.player--slim .pl-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--thumb);
+  border: none;
+}
+.player--slim .pl-range::-moz-range-track {
+  height: 6px;
+  background: var(--track-bg);
+  border-radius: 6px;
+}
+.player--slim .pl-range {
+  background-image: linear-gradient(var(--track-fill), var(--track-fill));
+  background-repeat: no-repeat;
+  background-size: 0% 6px;
+}
+.player--slim .pl-buffer {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  width: 0%;
+  background: var(--buffer);
+  border-radius: 6px;
+  pointer-events: none;
+}
+.player--slim .pl-time {
+  font-size: 12px;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+.player--slim .pl-vol {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 22px;
+} */
+@media (max-width: 720px) {
+  .track {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .track__cover {
+    width: 100%;
+    height: 250px;
+  }
+}
+/*========================LIST_OF_TRACKS============================*/
+.list-of-track {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 77px;
+  margin-top: 30px;
+}
+.video-track {
+  display: grid;
+  grid-template-rows: auto auto; /* превью + подпись */
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  height: 300px;
+  background-color: #d9cfc2;
+  overflow: hidden;
+}
+/* Превью: держим пропорцию и центрируем play */
+.video-preview {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9; /* стабильно и без «прыжка» */
+  background: #f2f2f2;
+}
+.video-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Кнопка Play (треугольник) */
+.video-play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.video-play::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-40%, -50%); /* чуть вправо визуально */
+  width: 0;
+  height: 0;
+  border-left: 20px solid #000; /* цвет треугольника */
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+}
+.video-preview:hover .video-play {
+  filter: brightness(0.95);
+}
+
+/* Подпись */
+.video-caption {
+  background: #d9cfc2;
+  padding: 12px 14px;
+}
+.video-title {
+  margin: 0 0 4px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+  background-color: #d9cfc2;
+}
+.video-subtitle {
+  background-color: #d9cfc2;
+}
+
+@media (max-width: 720px) {
+  .list-of-track {
+    grid-template-columns: 1fr; /* по одной колонке */
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .video-track {
+    max-width: none;
+    width: 100%;
   }
 }
