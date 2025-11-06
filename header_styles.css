@@ -524,20 +524,21 @@
 }
 .about__name {
   margin: 0 0 6px;
-  color: var(--ink);
+  color: #000;
   font-weight: 700;
-  font-size: clamp(20px, 2.8vw, 28px);
+
+  font-size: clamp(20px, 2.8vw, 48px);
 }
 .about__alias {
   margin: 0 0 14px;
-  color: var(--ink);
+  color: #000;
   font-weight: 800;
-  font-size: clamp(28px, 4.8vw, 40px);
+  font-size: clamp(28px, 4.8vw, 48px);
   letter-spacing: 0.01em;
 }
 .about__text {
   margin: 0 0 18px;
-  color: var(--ink);
+  color: #000;
   font-size: 16px;
   line-height: 1.7;
   max-width: 56ch;
@@ -550,7 +551,7 @@
   padding: 0;
   margin: 22px 0 0;
   display: grid;
-  gap: 14px;
+  gap: 30px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .stat {
@@ -594,7 +595,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 720px) {
   .about {
     padding: 36px 14px;
   }
@@ -609,4 +610,266 @@
     font-size: 12px;
     padding: 8px 10px;
   }
+}
+
+/*========================Music-Journey=========================*/
+.music-journey {
+  margin: 0 auto;
+  background-color: #fff;
+  width: 100%;
+  height: auto;
+  max-width: 1200px;
+  place-content: center;
+  margin-top: 50px;
+  border-radius: 20px;
+  display: flow-root;
+}
+
+.music-journey-title {
+  font-size: clamp(20px, 22.2vw, 48px);
+
+  color: #c9ab66;
+  background: transparent;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  position: relative;
+}
+.music-journey-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%; /* сразу под текстом */
+  transform: translateX(-50%);
+  /* width: clamp(120px, 40%, 420px); ширина «пилюли» */
+  width: 40%;
+  height: 8px; /* толщина */
+  background: currentColor; /* тот же цвет, что у заголовка */
+  border-radius: 9999px; /* круглые концы */
+  margin-top: -10px; /* отступ вниз от текста */
+}
+
+.music-journey-text {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding-left: clamp(50px, 6vw, 80px);
+  padding-right: clamp(50px, 6vw, 80px);
+  background: transparent;
+}
+.music-journey-text div {
+  background-color: #fff;
+  font-size: 20px;
+}
+.music-journey-text div strong {
+  background-color: #fff;
+  font-size: 20px;
+}
+#musicial-journey-text-right,
+#musicial-journey-text-left {
+  background-color: #f9f6ef;
+  padding: 25px 12px 25px;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 720px) {
+  .music-journey-text {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .music-journey-title::after {
+    width: 80%;
+    margin-top: 10px;
+  }
+  .music-journey-title {
+    line-height: 1; /* можно 1.0–1.15, под шрифт */
+    margin: 0; /* убираем внешние отступы h1 */
+    display: block; /* на всякий случай, чтобы не было flex/grid */
+    margin: 25px 20px 50px;
+  }
+}
+/*===================Career-Timeline========================*/
+:root {
+  --gold: #c9ab66;
+  --card-bg: #fff;
+  --card-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  --radius: 16px;
+}
+.career {
+  background: transparent;
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+.career-timeline-title {
+  background: transparent;
+  color: #c9ab66;
+  font-weight: 700;
+
+  text-align: center;
+  font-size: 48px;
+}
+.timeline-list {
+  display: grid;
+  grid-template-columns: 1fr 50px 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 0;
+  background: transparent;
+}
+
+.t-item {
+  display: contents;
+  background: transparent;
+}
+
+/* Карточки */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  min-width: 260px;
+}
+
+.card.left {
+  grid-column: 1;
+  justify-self: end;
+  border-top-left-radius: 28px;
+  background: #c9a961;
+  background: linear-gradient(
+    139deg,
+    rgba(201, 169, 97, 1) 5%,
+    rgba(255, 255, 255, 1) 30%
+  );
+
+  /* background-color: #000; */
+}
+.card.right-1 {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: start;
+  border-top-right-radius: 28px;
+  background: #c9a961;
+  background: linear-gradient(
+    221deg,
+    rgba(201, 169, 97, 1) 5%,
+    rgba(255, 255, 255, 1) 30%
+  );
+}
+.card.right-2 {
+  grid-column: 3;
+  grid-row: 4;
+  justify-self: start;
+  border-top-right-radius: 28px;
+  background: #c9a961;
+  background: linear-gradient(
+    221deg,
+    rgba(201, 169, 97, 1) 5%,
+    rgba(255, 255, 255, 1) 30%
+  );
+}
+.card.right-3 {
+  grid-column: 3;
+  grid-row: 6;
+  justify-self: start;
+  border-top-right-radius: 28px;
+  background: #c9a961;
+  background: linear-gradient(
+    221deg,
+    rgba(201, 169, 97, 1) 5%,
+    rgba(255, 255, 255, 1) 30%
+  );
+}
+
+/* Мелкие стили текста */
+.eyebrow {
+  font-weight: 700;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  background: transparent;
+  text-align: center;
+}
+.card h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.1;
+  background: transparent;
+  text-align: center;
+}
+.card p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.1;
+  background: transparent;
+  text-align: center;
+}
+
+/* Точки на линии */
+.dot {
+  grid-column: 2;
+  place-self: center; /* горизонталь + вертикаль */
+
+  align-self: center;
+  justify-self: center;
+  width: 18px;
+  height: 18px;
+  background-color: #c9a961;
+  border: 3px solid #d9d9d9;
+  box-shadow: 0 0 3px #c9a961;
+
+  border-radius: 50%;
+
+  transform: none;
+}
+.dot-out {
+  grid-column: 2;
+  place-self: center; /* горизонталь + вертикаль */
+
+  align-self: center;
+  justify-self: center;
+  width: 23px;
+  height: 23px;
+  background-color: #c9a961;
+  display: flex;
+  align-items: center; /* центрируем внутренний */
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0;
+  transform: none;
+}
+.outer {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #3d331d; /* внешний квадрат */
+  display: flex;
+  align-items: center; /* центрируем внутренний */
+  justify-content: center;
+}
+
+.inner {
+  width: 80px;
+  height: 80px;
+  border: 10px solid #575757;
+  border-radius: 50%;
+  background: #fff; /* внутренний квадрат */
 }
