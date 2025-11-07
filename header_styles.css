@@ -901,7 +901,7 @@
   height: 50px; /* длина линии */
   background: #c9a961;
 }
-/*==========================Master-statistics========================*/
+/*==========================Footer-Master-statistics========================*/
 
 .master-statistics {
   display: grid;
@@ -926,4 +926,131 @@
   font-size: 24px;
   color: #8b7355;
   font-weight: 400;
+}
+/*=============================Footer-Buttons================================*/
+.footer-booking {
+  text-align: center;
+  margin: 35px 0 35px;
+}
+.footer-booking h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #8b7355;
+  padding-bottom: 25px;
+}
+.btn-cont {
+  display: flex;
+  justify-content: center; /* центрируем кнопки по горизонтали */
+  align-items: center;
+  gap: 25px;
+}
+.footer-booking-btn {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 7px;
+  background: #975922;
+  background: linear-gradient(
+    221deg,
+    rgba(151, 89, 34, 1) 0%,
+    rgba(196, 160, 90, 1) 100%
+  );
+  padding: 10px 35px 10px;
+  cursor: pointer;
+}
+.footer-contact-btn {
+  color: #8b4513;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 7px;
+  border: 1px solid #c9a961;
+  padding: 10px 35px 10px;
+  cursor: pointer;
+}
+/*====================Articles and Updates TXT===================*/
+.articles-and-updates {
+  padding: 10px 14px 40px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.artic-upd-txt h1 {
+  font-family: "Lateef", sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+}
+.artic-upd-txt p {
+  font-family: "Lateef", sans-serif;
+  max-width: min(90ch, 100ch);
+  font-size: 20px;
+  margin: 0 auto;
+}
+.artic-upd-txt {
+  text-align: center;
+}
+/*=======================cards=========================*/
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 50px;
+  margin-top: 50px;
+}
+.card-p {
+  background-color: #d4a574;
+  height: 631px;
+  border-radius: 20px;
+  overflow: hidden; /* чтобы скругления обрезали содержимое */
+}
+.card-p-view img {
+  width: 100%;
+  height: 100%;
+  /* object-fit: cover; заполнить без искажений */
+  object-position: center 15%; /* смещение фокуса (подвинь по вкусу) */
+  display: block;
+}
+.card-p-view {
+  aspect-ratio: 4 / 3.1;
+  overflow: hidden; /* чтобы скругления обрезали фото */
+}
+.card-p-txt {
+  width: 100%;
+  background: transparent;
+}
+.card-p-txt h1 {
+  padding-top: 15px;
+  text-align: center;
+  font-family: "Lateef";
+  background: transparent;
+  font-size: 32px;
+  font-weight: 400;
+  color: #5a4a42;
+}
+.card-p-txt p {
+  background: transparent;
+  font-family: "Lateef";
+  font-size: 20px;
+  color: #5a4a42;
+  text-align: center;
+  padding: 5px 30px 5px;
+}
+.art-upd-fm-btn {
+  font-family: "Lateef";
+  font-size: 24px;
+  color: #fff;
+  text-decoration: none;
+  background: #965721;
+  background: linear-gradient(
+    221deg,
+    rgba(150, 87, 33, 1) 0%,
+    rgba(193, 157, 87, 1) 100%
+  );
+  border-radius: 20px;
+  padding: 0px 10px 0px;
+  grid-row: 4;
+}
+.btn-fom {
+  background: transparent;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  justify-content: center;
 }
