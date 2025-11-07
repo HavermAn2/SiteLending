@@ -95,18 +95,18 @@
 /*  -----------------Hero------------------- */
 
 .hero {
-  padding: 56px 16px 32px;
+  padding: 56px 16px 80px;
 }
 .hero__inner {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 48px;
+  justify-content: space-between;
 }
 .hero__left {
-  flex: 0 1 560px;
-  max-width: 560px;
+  flex: 0 1 700px;
+  max-width: auto;
 }
 .hero__right {
   flex: 0 0 auto;
@@ -131,9 +131,10 @@
 }
 .hero__desc {
   color: #3c3c3c;
-  font-size: 16px;
+  font-size: 20px;
+  font-style: 400;
   line-height: 1.7;
-  max-width: 56ch;
+  max-width: 100%;
   margin: 0 0 24px;
 }
 
@@ -253,7 +254,7 @@
   border-radius: 20px;
   padding: 30px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   justify-content: flex-start;
 }
@@ -401,18 +402,19 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   gap: 77px;
   margin-top: 30px;
 }
 .video-track {
   display: grid;
-  grid-template-rows: auto auto; /* превью + подпись */
+  grid-template-rows: 2fr 1fr; /* превью + подпись */
+  grid-template-columns: 1fr;
   background: #fff;
   border-radius: 20px;
   width: 100%;
-  height: 300px;
+  height: 600px;
   background-color: #d9cfc2;
   overflow: hidden;
 }
@@ -420,13 +422,13 @@
 .video-preview {
   position: relative;
   display: block;
-  aspect-ratio: 16 / 9; /* стабильно и без «прыжка» */
+  height: 450px;
   background: #f2f2f2;
 }
 .video-preview img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+
   display: block;
 }
 
@@ -459,18 +461,19 @@
 
 /* Подпись */
 .video-caption {
-  background: #d9cfc2;
+  background: transparent;
   padding: 12px 14px;
+  grid-row: 2;
 }
 .video-title {
   margin: 0 0 4px;
   font-weight: 700;
   font-size: 16px;
   color: var(--text);
-  background-color: #d9cfc2;
+  background: transparent;
 }
 .video-subtitle {
-  background-color: #d9cfc2;
+  background: transparent;
 }
 
 @media (max-width: 720px) {
@@ -490,7 +493,7 @@
   padding: 28px 14px 40px;
 }
 .profile {
-  max-width: 1200px;
+  max-width: 1440px;
   width: 100%;
   margin: 0 auto;
   display: grid;
@@ -618,7 +621,7 @@
   background-color: #fff;
   width: 100%;
   height: auto;
-  max-width: 1200px;
+  max-width: 1440px;
   place-content: center;
   margin-top: 50px;
   border-radius: 20px;
@@ -702,7 +705,7 @@
 .career {
   background: transparent;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
 
   margin: 0 auto;
 }
@@ -843,9 +846,6 @@
 .dot-out {
   grid-column: 2;
   place-self: center; /* горизонталь + вертикаль */
-
-  align-self: center;
-  justify-self: center;
   width: 23px;
   height: 23px;
   background-color: #c9a961;
@@ -855,21 +855,75 @@
   border-radius: 50%;
   margin: 0;
   transform: none;
+  position: relative;
 }
-.outer {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: #3d331d; /* внешний квадрат */
+.dot-out-noline {
+  grid-column: 2;
+  place-self: center; /* горизонталь + вертикаль */
+  width: 23px;
+  height: 23px;
+  background-color: #c9a961;
   display: flex;
   align-items: center; /* центрируем внутренний */
   justify-content: center;
-}
-
-.inner {
-  width: 80px;
-  height: 80px;
-  border: 10px solid #575757;
   border-radius: 50%;
-  background: #fff; /* внутренний квадрат */
+  margin: 0;
+  transform: none;
+  position: relative;
+}
+.dot-out::after {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* начинаем ровно под точкой */
+  left: 50%; /* по центру */
+  transform: translateX(-50%); /* выравниваем по центру */
+  width: 5px; /* толщина линии */
+  height: 110px; /* длина линии */
+  background: #c9a961;
+}
+.dot-out::before {
+  content: "";
+  position: absolute;
+  top: 100%; /* начинаем ровно под точкой */
+  left: 50%; /* по центру */
+  transform: translateX(-50%); /* выравниваем по центру */
+  width: 5px; /* толщина линии */
+  height: 50px; /* длина линии */
+  background: #c9a961;
+}
+.dot-out-noline::before {
+  content: "";
+  position: absolute;
+  top: 100%; /* начинаем ровно под точкой */
+  left: 50%; /* по центру */
+  transform: translateX(-50%); /* выравниваем по центру */
+  width: 5px; /* толщина линии */
+  height: 50px; /* длина линии */
+  background: #c9a961;
+}
+/*==========================Master-statistics========================*/
+
+.master-statistics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  border: 5px solid #e7dac1;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 1440px;
+  height: clamp(60px, 10vw, 200px);
+  margin: 0 auto;
+  margin-top: 30px;
+}
+.master-statistics div {
+  place-self: center;
+}
+.master-statistics h1 {
+  font-size: 48px;
+  color: #c9ab66;
+  text-align: center;
+}
+.master-statistics h3 {
+  font-size: 24px;
+  color: #8b7355;
+  font-weight: 400;
 }
