@@ -102,8 +102,15 @@
 <div class="list-of-track">
     <article class="video-track">
   <a class="video-preview" href="video.html" aria-label="Play: No Time To Die — Slavrada">
-    <img src="img/Rectangle 1.png" alt="Slavrada playing harp" loading="lazy">
-    <span class="video-play" aria-hidden="true"></span>
+<!-- <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/aqz-KE-bpKQ"
+        title="Big Buck Bunny"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>  -->
+
+
+
   </a>
   <footer class="video-caption">
     <h4 class="video-title">Slavrada</h4>
@@ -288,7 +295,7 @@
       </div>
     </div>
     
-    
+  
 </section>
     <section class="articles-and-updates">
       <div class="artic-upd-txt">
@@ -296,36 +303,67 @@
         <p>Make sure you never miss a  single Slavrada update! For new articles and album releases, reviews,  interviews and more, stay in the know with this regularly updated news  section. Read on to find out more.</p>
       </div>
       
-      <div class="cards">
-      <div class="card-p" id="f">
-        <div class="card-p-view"><img src="img/Rectangle 1.png"></div>
-        <div class="card-p-txt"><h1>March 22, 2022</h1><p>It was an honor to be a part of this magical lifetime moment!
-Kris And Brianna Fade Wedding</p>
+      <div class="cards" id ="cards-container">
+
+
+
+
+
+      <!-- <div class="card-p" id="f">                                                               
+        <div class="card-p-view"><img src="img/Rectangle 1.png"></div>                          
+        <div class="card-p-txt"><h1 id = "card-p-txt-h1"></h1><p id = "card-p-txt-p"></p>
 </div><div class="btn-fom">
 <a href="#"class="art-upd-fm-btn">Find Out More</a></div>
-      </div>
-      <div class="card-p" id="s">
-        <div class="card-p-view"><img src="img/Rectangle 1.png"></div>
-        <div class="card-p-txt"><h1>March 22, 2022</h1><p>It was an honor toвкпвкпвпв be a part of this magical lifetime moment!
-Kris And Brianna Fade Wedding</p>
+      </div>  -->
 
+<!-- <div id="cards-container"> -->
+  <!-- Шаблон карточки -->
+  <div class="card-p card-template">
+    <div class="card-p-view">
+      <img src="img/Rectangle 1.png">
+    </div>
+    <div class="card-p-txt">
+      <h1 class="card-p-txt-h1"></h1>
+      <p class="card-p-txt-p"></p>
+    </div>
+    <div class="btn-fom">
+      <a href="#" class="art-upd-fm-btn">Find Out More</a>
+    </div>
+  </div>
 </div>
-<div class="btn-fom">
-<a href="#"class="art-upd-fm-btn">Find Out More</a></div>
-</div>
-      
-      <div class="card-p" id="t">
-        <div class="card-p-view"><img src="img/Rectangle 1.png"></div>
-        <div class="card-p-txt"><h1>March 22, 2022</h1><p>It was an honor to be a part of this magical lifetime moment!
-Kris And Brianna Fade Wedding</p>
 
-</div>
 
-<div class="btn-fom">
-<a href="#"class="art-upd-fm-btn">Find Out More</a></div>
+
+
       </div>
-      </div>
-     
+             <script>
+          async function load_cards() {
+  const res = await fetch("/content.json"); // или /articles.json — смотри как назвал
+  const data = await res.json();
+
+  const container = document.getElementById("cards-container");
+  const template = container.querySelector(".card-template");
+
+  // Чистим контейнер, чтобы не было старых карточек
+  container.innerHTML = "";
+
+  data.Articles.forEach(article => {
+    // Клонируем шаблон
+    const card = template.cloneNode(true);
+    card.classList.remove("card-template");  // чтобы не скрывался в CSS
+
+    // Подставляем текст
+    card.querySelector(".card-p-txt-h1").textContent = article.name;
+    card.querySelector(".card-p-txt-p").textContent = article.description;
+
+    // Кладём карточку в контейнер
+    container.appendChild(card);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", load_cards);
+
+      </script>
       
     </section>
     <section class="good-cards-containeer">
@@ -362,7 +400,7 @@ Kris And Brianna Fade Wedding</p>
             <h1>Acoustic Harp</h1>
             <h2 id="good-card-text-1">45 min</h2>
             <h3 id="good-card-text-2">From 3,000</h3>
-            <a href="#">Book Now</a>
+            <a id="open-booking-btn" href="#">Book Now</a>
           </div>
           <div class="good-card-img"><img src="/img/Frame 39.png"></div>
         </div>
@@ -385,15 +423,116 @@ Kris And Brianna Fade Wedding</p>
   <div class="map-wrap">
   <iframe  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7229.501853521136!2d55.240212678538306!3d25.04252542116771!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6f90e288fc23%3A0xe91a3739fcf492c8!2sDubai%20Studio%20City%20by%20TECOM%20Group!5e0!3m2!1sru!2spl!4v1762960507335!5m2!1sru!2spl"   style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
-
-
-
-
 </footer>
+<!-- Кнопка открытия модалки -->
+
+
+<!-- Модальное окно -->
+<div class="modal" id="booking-modal">
+  <div class="modal__content">
+    <button class="modal__close" id="close-booking-btn">&times;</button>
+    <h2>Бронирование</h2>
+     <form id="booking-form">
+    <input id="customers-name"  name="name"  placeholder="Имя"><br>
+    <input id="customers-phone" name="phone" placeholder="Телефон"><br>
+    <input id="customers-date"  name="date"  type="date"><br>
+    <textarea id="customers-msg" name="msg" placeholder="Сообщение"></textarea><br>
+    <button type="submit">Отправить</button>
+  </form>
+  </div>
+</div>
+
+<script>
+ 
+      const form = document.getElementById("booking-form");
+
+      async function send_bookig_form(e) {
+        e.preventDefault(); // отменяем стандартную отправку
+
+        const nameEl  = document.getElementById("customers-name");
+        const phoneEl = document.getElementById("customers-phone");
+        const dateEl  = document.getElementById("customers-date");
+        const msgEl   = document.getElementById("customers-msg");
+
+        console.log("nameEl:", nameEl);
+        console.log("phoneEl:", phoneEl);
+        console.log("dateEl:", dateEl);
+        console.log("msgEl:", msgEl);
+
+        // Если какой-то элемент не найден — сразу выходим
+        if (!nameEl || !phoneEl || !dateEl || !msgEl) {
+          console.error("Один из инпутов не найден по id");
+          return;
+        }
+
+        const payload = {
+          name:  nameEl.value,
+          phone: phoneEl.value,
+          day:   dateEl.value,
+          message:   msgEl.value,
+        };
+         try {
+    const res = await fetch("http://127.0.0.1:8000/data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      console.error("Ошибка при отправке:", res.status);
+      return;
+    }
+
+    const result = await res.json().catch(() => null);
+    console.log("Ответ сервера:", result);
+
+    // 🔹 ЗДЕСЬ закрываем модалку и чистим форму
+    modal.classList.remove("modal--open");
+    form.reset();
+  } catch (err) {
+    console.error("Ошибка сети или fetch:", err);
+  }
+       
+
+        form.reset();
+      }
+  const openBtn = document.getElementById("open-booking-btn");
+  const closeBtn = document.getElementById("close-booking-btn");
+  const modal = document.getElementById("booking-modal");
+  
+  
+  
+
+  // Открыть модалку
+  openBtn.addEventListener("click", () => {
+    modal.classList.add("modal--open");
+  });
+
+  // Закрыть по крестику
+  closeBtn.addEventListener("click", () => {
+    modal.classList.remove("modal--open");
+  });
+
+  // Закрыть по клику на фон
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.remove("modal--open");
+    }
+  });
+      form.addEventListener("submit", send_bookig_form);
+    
+  
+</script>
 
     
   </body>
 </html>
+
+
+
+
 
 
 

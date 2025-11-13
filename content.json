@@ -1,0 +1,24 @@
+{
+  "Articles": [
+    {
+      "id": 1,
+      "name": "March 22, 2022",
+      "description": "It was an honor to be a part of this magical lifetime moment! Kris And Brianna Fade Wedding"
+    },
+    {
+      "id": 2,
+      "name": "Q",
+      "description": "Q"
+    },
+    {
+      "id": 3,
+      "name": "W",
+      "description": "W"
+    },
+    {
+      "id": 4,
+      "name": "Andrew Nr1",
+      "description": "Andrew Nr1"
+    }
+  ]
+}

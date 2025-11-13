@@ -397,6 +397,7 @@
     height: 250px;
   }
 }
+
 /*========================LIST_OF_TRACKS============================*/
 .list-of-track {
   display: grid;
@@ -486,6 +487,13 @@
   .video-track {
     max-width: none;
     width: 100%;
+  }
+}
+@media (max-width: 1200px) {
+  .list-of-track {
+    grid-template-columns: 1fr 1fr; /* по одной колонке */
+    gap: 12px;
+    padding: 12px;
   }
 }
 /*===========About-Section===========*/
@@ -1226,4 +1234,45 @@ h3 {
   height: 100%;
 
   max-height: 200px;
+}
+/*================Modal-booking==================*/
+/* Фон модалки */
+.modal {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  display: none; /* по умолчанию скрыто */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Когда модалка открыта */
+.modal--open {
+  display: flex;
+}
+
+/* Контент модалки */
+.modal__content {
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+}
+
+/* Крестик */
+.modal__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.card-template {
+  display: none;
 }
