@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   </head>
   <body>
@@ -302,22 +303,10 @@
         <h1>ARTICLES  & UPDATES</h1>
         <p>Make sure you never miss a  single Slavrada update! For new articles and album releases, reviews,  interviews and more, stay in the know with this regularly updated news  section. Read on to find out more.</p>
       </div>
-      
-      <div class="cards" id ="cards-container">
+<div class="slider">
+<button class="slider-btn prev">←</button>
+<div class="cards" id ="cards-container">
 
-
-
-
-
-      <!-- <div class="card-p" id="f">                                                               
-        <div class="card-p-view"><img src="img/Rectangle 1.png"></div>                          
-        <div class="card-p-txt"><h1 id = "card-p-txt-h1"></h1><p id = "card-p-txt-p"></p>
-</div><div class="btn-fom">
-<a href="#"class="art-upd-fm-btn">Find Out More</a></div>
-      </div>  -->
-
-<!-- <div id="cards-container"> -->
-  <!-- Шаблон карточки -->
   <div class="card-p card-template">
     <div class="card-p-view">
       <img src="img/Rectangle 1.png">
@@ -331,14 +320,12 @@
     </div>
   </div>
 </div>
+<button class="slider-btn next">→</button>
+</div> 
 
-
-
-
-      </div>
              <script>
           async function load_cards() {
-  const res = await fetch("/content.json"); // или /articles.json — смотри как назвал
+  const res = await fetch("data/content.json"); // или /articles.json — смотри как назвал
   const data = await res.json();
 
   const container = document.getElementById("cards-container");
@@ -360,6 +347,38 @@
     container.appendChild(card);
   });
 }
+const container = document.getElementById('cards-container');
+const prevBtn   = document.querySelector('.slider-btn.prev');
+const nextBtn   = document.querySelector('.slider-btn.next');
+
+// шаг пролистывания = ширина карточки + gap между ними
+function getStep() {
+  const card = container.querySelector('.card-p');
+  if (!card) return 300;                 // запасной вариант
+
+  const styles = getComputedStyle(container);
+  const gap = parseInt(styles.gap || styles.columnGap || 0);
+
+  return card.offsetWidth + gap;
+}
+
+function goNext() {
+  container.scrollBy({
+    left: getStep(),
+    behavior: 'smooth'
+  });
+}
+
+function goPrev() {
+  container.scrollBy({
+    left: -getStep(),
+    behavior: 'smooth'
+  });
+}
+
+// по нажатию на кнопки
+nextBtn.addEventListener('click', goNext);
+prevBtn.addEventListener('click', goPrev);
 
 document.addEventListener("DOMContentLoaded", load_cards);
 
@@ -435,15 +454,18 @@ document.addEventListener("DOMContentLoaded", load_cards);
      <form id="booking-form">
     <input id="customers-name"  name="name"  placeholder="Имя"><br>
     <input id="customers-phone" name="phone" placeholder="Телефон"><br>
-    <input id="customers-date"  name="date"  type="date"><br>
+    <input id="customers-date" name="date" type="text"><br>
     <textarea id="customers-msg" name="msg" placeholder="Сообщение"></textarea><br>
     <button type="submit">Отправить</button>
   </form>
   </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="scripts/booking.js"></script>
 <script>
- 
+
+setInterval(loadBookings,20000);
+
       const form = document.getElementById("booking-form");
 
       async function send_bookig_form(e) {

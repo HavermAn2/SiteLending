@@ -1041,12 +1041,43 @@
 }
 
 /*=======================cards=========================*/
-
 .cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge старый */
   gap: 50px;
   margin-top: 50px;
+  overflow-x: auto; /* даёт свайп на телефоне */
+  scroll-snap-type: x mandatory;
+}
+.slider-btn {
+  position: absolute;
+  height: 62px;
+  width: 62px;
+  top: 50%; /* по центру по вертикали */
+  transform: translateY(-50%);
+  z-index: 10; /* поверх карточек */
+  cursor: pointer;
+  font-size: 35px;
+  place-items: center;
+  border: none;
+
+  border-radius: 10px;
+  background: #bc9450;
+  color: #fff;
+}
+
+/* левая кнопка */
+.slider-btn.prev {
+  left: -41px; /* отступ от левого края карусели */
+}
+
+/* правая кнопка */
+.slider-btn.next {
+  right: -41px; /* отступ от правого края карусели */
+}
+.slider {
+  position: relative;
 }
 .card-p {
   background-color: #d4a574;
@@ -1055,9 +1086,9 @@
   overflow: hidden; /* чтобы скругления обрезали содержимое */
   display: flex;
   flex-direction: column;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   flex: 0 0 80%;
-  max-width: 640px;
+  max-width: 370px;
 }
 .card-p-view img {
   width: 100%;

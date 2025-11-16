@@ -8,6 +8,8 @@ import httpx
 import json
 from pathlib import Path
 import datetime 
+import sqlite3
+
 
 load_dotenv("pass.env")
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -23,7 +25,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 def esc_md_v2(s: str) -> str:
@@ -63,7 +64,7 @@ async def send_to_telegram(data: SimpleBooking):
 
 
 
-DATA_FILE = Path("content.json")
+DATA_FILE = Path("data/content.json")
 
 
 @app.post("/webhook")
@@ -71,26 +72,93 @@ async def telegram_webhook(req: Request):
     body = await req.json()
     if "message" in body and "text" in body["message"]:
         text = body["message"]["text"]
-        save_message(text)  # ← сохраняем в JSON
+        load_request(text)#Obrabotka input s bota
 
     return {"ok": True,"message": body}
+@app.get("/bookings")
+def get_bookings():
+    con = sqlite3.connect("data/booking.db")
+    cur = con.cursor()
+    cur.execute("SELECT date FROM bookings")
+    rows = cur.fetchall()
+    con.close()
+    dates = [row[0] for row in rows]  
+
+    return {"dates": dates}
+
+    
+def load_request(text:str):
+    txt = text.strip()
+    if not DATA_FILE.exists():
+        DATA_FILE.write_text(json.dumps({"Articles": []}, ensure_ascii=False, indent=2))
+    if txt.startswith("/add"):
+        save_message(text)
+    if txt.startswith("/remove"):
+        remove_message(text)
+    if txt.startswith("/book"):
+        book_date(text)
+
 
 def save_message(text: str):
     if not DATA_FILE.exists():
         DATA_FILE.write_text(json.dumps({"Articles": []}, ensure_ascii=False, indent=2))
     data = json.loads(DATA_FILE.read_text(encoding="utf-8")) # загрузить данные из файла
     articles = data.get("Articles")
+    text_without_pref=text.removeprefix("/add")
+    parts = text_without_pref.split("@", 1)  # разрезать только по первому "!"
+    name = parts[0].strip()
+    description = parts[1].strip() if len(parts) > 1 else ""
     _id = len(articles)+1
-    txt = [("id", _id), ("name", text), ("description", text)]
+    txt = [("id", _id), ("name", name), ("description", description)]
     artticle_data= dict(txt)
     articles.append(artticle_data)
-    
 
-   
     DATA_FILE.write_text(
         json.dumps(data, ensure_ascii=False, indent=2), # сохранить обратно
         encoding="utf-8"
     )
+def remove_message(text: str) -> bool:
+    txt = str(text).strip()
+    digits = "".join(ch for ch in txt if ch.isdigit())
+    if not digits:
+        return False
+    art_id = int(digits)  
+
+    if not DATA_FILE.exists():
+        return False  # файла нет – нечего удалять
+
+    data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+    articles = data.get("Articles", [])
+
+    # отфильтровать статьи, оставив все, кроме нужного id
+    new_articles = [a for a in articles if a.get("id") != art_id]
+    for i, val in enumerate(new_articles, start=1):  # начинаем с 1
+        val["id"] = i   # или str(i), если id должны быть строками
+
+    
+
+    # если длина не изменилась – такой id не нашли
+    if len(new_articles) == len(articles):
+        return False
+
+    # сохранить обратно в файл
+    data["Articles"] = new_articles
+    DATA_FILE.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+    return True
+
+def book_date(text:str):
+    con = sqlite3.connect("data/booking.db")
+    cur = con.cursor()
+    date=text.removeprefix("/book").strip()
+    new_date=str(date)
+    cur.execute("INSERT INTO bookings (date) VALUES (?)",(new_date,))
+    con.commit()
+    con.close()
+    return True
+
 
 def load_data() -> dict:
     if not DATA_FILE.exists():
