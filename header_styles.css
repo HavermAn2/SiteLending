@@ -279,7 +279,7 @@
 }
 
 /* базовая раскладка без панели */
-/* .player--slim {
+.player--slim {
   display: flex;
   gap: 14px;
   background: transparent;
@@ -291,7 +291,7 @@
 }
 
 /* Play: треугольник / пауза */
-/* .player--slim .pl-btn {
+ .player--slim .pl-btn {
   width: 22px;
   height: 22px;
   border: none;
@@ -320,7 +320,7 @@
     linear-gradient(var(--thumb), var(--thumb)) right/4px 12px no-repeat;
 } */
 
-/* .player--slim .pl-timeline {
+ .player--slim .pl-timeline {
   position: relative;
   flex: 1 1 auto;
   min-width: 0;
@@ -386,7 +386,7 @@
   cursor: pointer;
   font-size: 16px;
   line-height: 22px;
-} */
+}
 @media (max-width: 720px) {
   .track {
     flex-direction: column;
@@ -408,6 +408,10 @@
   gap: 77px;
   margin-top: 30px;
 }
+.list-of-track iframe{
+  width: 100%;
+  height: 100%;
+}
 .video-track {
   display: grid;
   grid-template-rows: 2fr 1fr; /* превью + подпись */
@@ -415,7 +419,7 @@
   background: #fff;
   border-radius: 20px;
   width: 100%;
-  height: 600px;
+  max-height: 600px;
   background-color: #d9cfc2;
   overflow: hidden;
 }
@@ -423,7 +427,6 @@
 .video-preview {
   position: relative;
   display: block;
-  height: 450px;
   background: #f2f2f2;
 }
 .video-preview img {
@@ -1094,7 +1097,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover; /*заполнить без искажений */
-  object-position: center 15%; /* смещение фокуса (подвинь по вкусу) */
+  object-position: center 40%; /* смещение фокуса (подвинь по вкусу) */
 }
 .card-p-view {
   aspect-ratio: 16 / 12;
@@ -1154,6 +1157,7 @@
   margin: 0 auto;
   margin-top: 50px;
 }
+
 .good-cards {
   display: flex;
   flex-direction: column;
@@ -1276,6 +1280,7 @@ h3 {
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
+  
 }
 
 /* Когда модалка открыта */
@@ -1285,14 +1290,39 @@ h3 {
 
 /* Контент модалки */
 .modal__content {
-  background: #fff;
+  background: #ebe1d8;
   padding: 20px 24px;
   border-radius: 8px;
   max-width: 400px;
   width: 100%;
   position: relative;
 }
+.modal__content h2{
+  text-align: center;
+  color:#000;
+}
 
+#booking-form{
+  background:transparent;
+  display: flex;
+  flex-direction: column;
+  
+}
+#customers-name,#customers-phone,#customers-date,#customers-time,#customers-msg{
+  background:transparent;
+  border-radius: 3px;
+   border: 1px solid #000000;
+   max-width: 100vw;
+}
+#customer-data-send{
+  background:transparent;
+  background-color: #b58948;
+  border: 0px;
+  border-radius: 3px;
+  width: 25%;
+  max-width: 100px;
+  align-self: center;
+}
 /* Крестик */
 .modal__close {
   position: absolute;

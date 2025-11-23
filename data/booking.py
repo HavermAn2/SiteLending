@@ -1,18 +1,20 @@
 import sqlite3
+import requests
+con1=sqlite3.connect("data/art-updates.db")
+cur1=con1.cursor()
+      # список кортежей
 
-con = sqlite3.connect("data/booking.db")
-cur = con.cursor()
-
-# cur.execute("INSERT INTO bookings (date) VALUES (?)",
-#     ("2025-11-19",) 
-# )
-# cur.execute(
-#     "UPDATE bookings SET date = ? WHERE id = ?",
-#     ("2025-11-18", 2)
-# )
-# con.commit()
-cur.execute("Select * from bookings")
-rows = cur.fetchall()      # список кортежей
-
-for row in rows:
-    print(row)
+def remove_message(title: str) -> bool:
+    try:
+        with sqlite3.connect("data/art-updates.db") as con:
+            cur = con.cursor()
+            cur.execute("delete FROM photos WHERE description = ?", (title,))
+            con.commit()
+            rows = cur.fetchall()
+            dates = [row for row in rows]
+            print(dates)
+            return True
+    except sqlite3.Error as e:
+        print(f"Error in DB: {e}")
+        return False
+remove_message("andreuis_bot")
