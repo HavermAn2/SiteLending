@@ -5,11 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr, Field
 from dotenv import load_dotenv
 import httpx
-import json
-from pathlib import Path
-import datetime 
 import sqlite3
-import requests
+import aiosqlite
+import anyio
 #===============Tokens=======================
 load_dotenv(".env")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -83,10 +81,9 @@ async def telegram_webhook(req: Request):
     if text:
         txt = text.strip()
         if txt.startswith("/add"):
-            save_message(text, photo)
+            await save_message(text, photo)
         if txt.startswith("/remove"):
-            title_for_removing=message_parcing(text)
-            remove_message(title_for_removing)
+            await remove_message(text)
         if txt.startswith("/book"):
             book_date(text)
 
@@ -103,7 +100,7 @@ def message_parcing(text:str):
         return [name,description]
     if text.startswith("/remove"):
         text_without_pref = text.removeprefix("/remove").strip()
-        return str(text_without_pref)
+        return name
     if text.startswith("/book"):
         text_without_pref = text.removeprefix("/book").strip()
         parts = text_without_pref.split("@", 1)
@@ -112,48 +109,67 @@ def message_parcing(text:str):
         return [name,description]
 
 
-def save_message(text: str, photo):
-    con = sqlite3.connect("data/art-updates.db")
-    cur = con.cursor()
-    title,desc = message_parcing(text)
-   
+async def save_message(text: str, photo):
+    title, desc = message_parcing(text)
 
-    # безопасно обрабатываем опциональное фото
-    photo_url = None
+    photo_path = None
     if photo:
         try:
-            # последний элемент — самое большое фото
-            photo_id = photo[-1]["file_id"]
-            photo_url = download_photo_from_tg(photo_id)
+            photo_id = photo[-1]["file_id"]  # самое большое фото
+            photo_path = await get_photo_path(photo_id)
         except (TypeError, IndexError, KeyError):
-            photo_url = None
+            photo_path = None
 
-    cur.execute(
-        "INSERT INTO photos (title, description, photo_url) VALUES (?, ?, ?)",
-        (title, desc, photo_url)
-    )
-    con.commit()
-    con.close()
+    async with aiosqlite.connect("data/art-updates.db") as con:
+        await con.execute(
+            "INSERT INTO photos (title, description, photo_url) VALUES (?, ?, ?)",
+            (title, desc, photo_path)
+        )
+        await con.commit()
 
-def download_photo_from_tg(photo_id: str) -> str:
-    # 1) Получаем file_path
-    r = requests.get(
-        f"https://api.telegram.org/bot{BOT_TOKEN}/getFile",
-        params={"file_id": photo_id}
-    )
-    r.raise_for_status()
-    data = r.json()
-    if not data.get("ok"):
-        raise RuntimeError(f"Telegram getFile error: {data}")
+async def get_photo_path(photo_id: str) -> str | None:
+    if not BOT_TOKEN:
+        raise HTTPException(500, "Bot token/chat id не заданы")
 
-    file_path = data["result"]["file_path"]
+    async with httpx.AsyncClient() as client:
+        r = await client.get(
+            f"https://api.telegram.org/bot{BOT_TOKEN}/getFile",
+            params={"file_id": photo_id}
+        )
+        r.raise_for_status()
+        data = r.json()
+        if not data.get("ok"):
+            print(f"Telegram getFile error: {data}")
+            return None
 
-    # 2) Собираем URL файла
-    file_url = f"https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}"
-    return file_url
+        file_path = data["result"]["file_path"]
+        file_url = f"https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}"
+
+    local_path = await download_image(file_url, folder="src")
+    return local_path
+        
 
 
 
+async def download_image(url: str, folder: str="src") -> str | None:
+    os.makedirs(folder, exist_ok=True)
+
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        response.raise_for_status()
+
+        # content_type = response.headers.get("Content-Type", "")
+        # if not content_type.startswith("image/"):
+        #     print("selam")
+        #     return None
+
+        filename = url.split("/")[-1] or "image.jpg"
+        path = os.path.join(folder, filename)
+
+        with open(path, "wb") as f:
+            f.write(response.content)
+
+        return path
 
 
 @app.get("/get_card_info")
@@ -196,23 +212,49 @@ def get_bookings():
     return {"dates": dates}
 
     
+DB_PATH = "data/art-updates.db"
 
 
-def remove_message(title: str) -> bool:
-    print(title)
+async def remove_message(tit: str) -> bool:
+    text_without_pref = tit.removeprefix("/remove").strip()
+    print(text_without_pref)
+
     try:
-        with sqlite3.connect("data/art-updates.db") as con:
-            cur = con.cursor()
-            cur.execute("delete FROM photos WHERE title = ?", (title,))
-            con.commit()
-            rows = cur.fetchall()
-            dates = [row for row in rows]
-            print(dates)
+        async with aiosqlite.connect(DB_PATH) as con:
+            cur = await con.cursor()
+
+            # 1. znajdź rekord
+            await cur.execute(
+                "SELECT * FROM photos WHERE title = ?",
+                (text_without_pref,)
+            )
+            rows = await cur.fetchall()
+
+            if not rows:
+                print("Nic nie znaleziono w bazie")
+                return False
+
+            # 2. usuń plik(i) z dysku
+            local_jpg_paths = [row[3] for row in rows]  # zakładamy ścieżkę w kolumnie nr 4
+            for path in local_jpg_paths:
+                try:
+                    # usunięcie pliku w wątku, żeby nie blokować event loopa
+                    await anyio.to_thread.run_sync(os.remove, path)
+                except OSError as e:
+                    print(f"Nie udało się usunąć pliku {path}: {e}")
+
+            # 3. usuń rekordy z bazy
+            await cur.execute(
+                "DELETE FROM photos WHERE title = ?",
+                (text_without_pref,)
+            )
+            await con.commit()
+
             return True
-    except sqlite3.Error as e:
+
+    except aiosqlite.Error as e:
         print(f"Error in DB: {e}")
         return False
-   
     
 
 def book_date(text:str):
