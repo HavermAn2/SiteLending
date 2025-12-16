@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="header_styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&display=swap" rel="stylesheet">
@@ -24,9 +24,9 @@
         <nav class="nav">
           <ul class="nav-list">
             <li><a href="#">Home</a></li>
-            <li><a href="#">Book Online</a></li>
+            <li><a href="#good-cards-containeer">Book Online</a></li>
             <li><a href="#">Blog</a></li>
-            <li><a href="#"><a>More</a></li>
+            <li><a href="#articles-and-updates"><a>More</a></li>
           </ul>
         </nav>
 
@@ -46,7 +46,7 @@
       </p>
 
       <div class="hero__actions">
-        <a class="btn btn--primary" href="#booking">Book performance</a>
+        <a class="btn btn--primary" href="#good-cards-containeer">Book performance</a>
         <a class="btn btn--ghost" href="#videos">Watch Videos</a>
       </div>
     </div>
@@ -56,7 +56,7 @@
     </div>
   </div>
         </section>
-        <section class="music">
+        <section class="music"id="videos">
   <div class="music__inner">
     <h2 class="music__title">Listen to My Music</h2>
     <p class="music__lead">
@@ -70,7 +70,8 @@
     <h3 class="track__title">No Time To Die</h3>
     <p class="track__meta">(Slavrada Harp Edition) (Remastered)</p>
 
-    <div class="player player--slim" data-src="media/no-time-to-die.mp3" aria-label="Audio player">
+    <div class="player player--slim" data-src="media/Billie Eilish - No Time To Die_(play.muzfan.net).mp3" aria-label="Audio player">
+      <audio class="pl-audio" src="media/media/Billie Eilish - No Time To Die_(play.muzfan.net).mp3"></audio>
   <button class="pl-btn" aria-label="Play" title="Play" data-state="paused"></button>
 
   <div class="pl-timeline">
@@ -101,6 +102,110 @@
   </div>
 </div>
 </div>
+<script>
+  // ВЕСЬ КОД МОЖНО ВСТАВИТЬ В КОНЕЦ <body> ИЛИ В ОТДЕЛЬНЫЙ ФАЙЛ
+document.addEventListener("DOMContentLoaded", () => {
+  const players = document.querySelectorAll(".player.player--slim");
+  const allAudios = [];
+
+  players.forEach((player) => {
+    const src = player.dataset.src;
+    if (!src) return;
+
+    // создаём Audio-объект
+    const audio = new Audio(src);
+    audio.preload = "metadata";
+    allAudios.push(audio);
+
+    const playBtn   = player.querySelector(".pl-btn");
+    const range     = player.querySelector(".pl-range");
+    const bufferBar = player.querySelector(".pl-buffer");
+    const timeEl    = player.querySelector(".pl-time");
+    const volBtn    = player.querySelector(".pl-vol");
+
+    // форматирование времени 00:00
+    const formatTime = (sec) => {
+      if (!sec || isNaN(sec)) return "00:00";
+      sec = Math.floor(sec);
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    };
+
+    // обновление прогресс-бара (заливка)
+    const updateRangeBg = () => {
+      const val = parseFloat(range.value) || 0;
+      const max = parseFloat(range.max) || 1;
+      const percent = (val / max) * 100;
+      range.style.backgroundSize = `${percent}% 6px`;
+    };
+
+    // когда знаем длительность
+    audio.addEventListener("loadedmetadata", () => {
+      range.max = audio.duration || 0;
+      timeEl.textContent = `${formatTime(0)}/${formatTime(audio.duration)}`;
+      updateRangeBg();
+    });
+
+    // во время проигрывания
+    audio.addEventListener("timeupdate", () => {
+      range.value = audio.currentTime || 0;
+      updateRangeBg();
+      timeEl.textContent = `${formatTime(audio.currentTime)}/${formatTime(audio.duration)}`;
+    });
+
+    // буферизация (серый бар под прогрессом)
+    audio.addEventListener("progress", () => {
+      if (!audio.duration) return;
+      try {
+        const end = audio.buffered.end(audio.buffered.length - 1);
+        const percent = (end / audio.duration) * 100;
+        bufferBar.style.width = `${percent}%`;
+      } catch (e) {
+        // иногда buffered пустой — просто игнор
+      }
+    });
+
+    // клик по play/pause
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        // ставим на паузу все остальные
+        allAudios.forEach((a) => {
+          if (a !== audio) a.pause();
+        });
+        // обновляем состояние других кнопок
+        players.forEach((p) => {
+          if (p !== player) {
+            const b = p.querySelector(".pl-btn");
+            if (b) b.dataset.state = "paused";
+          }
+        });
+
+        audio.play();
+        playBtn.dataset.state = "playing";
+      } else {
+        audio.pause();
+        playBtn.dataset.state = "paused";
+      }
+    });
+
+    // перемотка ползунком
+    range.addEventListener("input", () => {
+      const val = parseFloat(range.value) || 0;
+      audio.currentTime = val;
+      updateRangeBg();
+      timeEl.textContent = `${formatTime(audio.currentTime)}/${formatTime(audio.duration)}`;
+    });
+
+    // mute / unmute
+    volBtn.addEventListener("click", () => {
+      audio.muted = !audio.muted;
+      volBtn.classList.toggle("is-muted", audio.muted);
+    });
+  });
+});
+
+</script>
 <div class="list-of-track">
     <article class="video-track">
   <a class="video-preview" href="video.html" aria-label="Play: No Time To Die — Slavrada">
@@ -326,14 +431,14 @@
     <div class="footer-booking">
       <h3>Ready to bring magic to your event?</h3>
       <div class="btn-cont">
-      <a class = "footer-booking-btn">Book performance</a>
+      <a class = "footer-booking-btn" href="#good-cards-containeer">Book performance</a>
       <a class = "footer-contact-btn">Contact Me</div></a>
       </div>
     </div>
     
   
 </section>
-    <section class="articles-and-updates">
+    <section class="articles-and-updates" id="articles-and-updates">
       <div class="artic-upd-txt">
         <h1>ARTICLES  & UPDATES</h1>
         <p>Make sure you never miss a  single Slavrada update! For new articles and album releases, reviews,  interviews and more, stay in the know with this regularly updated news  section. Read on to find out more.</p>
@@ -418,7 +523,7 @@ document.addEventListener("DOMContentLoaded", load_cards);
       </script>
       
     </section>
-    <section class="good-cards-containeer">
+    <section class="good-cards-containeer" id="good-cards-containeer">
       
       <div class="good-cards">
         <div class="good-card" id="good-card-1">
@@ -426,7 +531,7 @@ document.addEventListener("DOMContentLoaded", load_cards);
             <h1>Acoustic Harp</h1>
             <h2 id="good-card-text-1">45 min</h2>
             <h3 id="good-card-text-2">From 3,000</h3>
-            <a href="#">Book Now</a>
+            <a id="open-booking-btn" href="#">Book Now</a>
           </div>
           <div class="good-card-img"><img src="/img/Frame 39.png"></div>
         </div>
@@ -435,7 +540,7 @@ document.addEventListener("DOMContentLoaded", load_cards);
             <h1>Acoustic Harp</h1>
             <h2 id="good-card-text-1">45 min</h2>
             <h3 id="good-card-text-2">From 3,000</h3>
-            <a href="#">Book Now</a>
+            <a id="open-booking-btn" href="#">Book Now</a>
           </div>
           <div class="good-card-img"><img src="/img/Frame 39.png"></div>
         </div>
@@ -444,7 +549,7 @@ document.addEventListener("DOMContentLoaded", load_cards);
             <h1>Acoustic Harp</h1>
             <h2 id="good-card-text-1">45 min</h2>
             <h3 id="good-card-text-2">From 3,000</h3>
-            <a href="#">Book Now</a>
+            <a id="open-booking-btn" href="#">Book Now</a>
           </div>
           <div class="good-card-img"><img src="/img/Frame 39.png"></div>
         </div>
@@ -457,12 +562,7 @@ document.addEventListener("DOMContentLoaded", load_cards);
           </div>
           <div class="good-card-img"><img src="/img/Frame 39.png"></div>
         </div>
-           
-        
-        
-        
       </div>
- 
     </section>
     </main>
 <div class="footer-txt">
@@ -489,7 +589,9 @@ document.addEventListener("DOMContentLoaded", load_cards);
     <input id="customers-name"  name="name"  placeholder="name"><br>
     <input id="customers-phone" name="phone" placeholder="phone"><br>
     <input id="customers-date" name="date" type="text"><br>
-    <!-- <input id="customers-time" name="time" type="time" placeholder="Click to choose the date"><br> -->
+    <select id="customers-time">
+    <option value="">Firstly choose the date!!!</option>
+    </select><br>
     <textarea id="customers-msg" name="msg" placeholder="message"></textarea><br>
     <button id="customer-data-send" type="submit">Send</button>
   </form>
@@ -510,13 +612,8 @@ setInterval(loadBookings,20000);
         const phoneEl = document.getElementById("customers-phone");
         const dateEl  = document.getElementById("customers-date");
         const msgEl   = document.getElementById("customers-msg");
+        const timeEl   = document.getElementById("customers-time");
 
-        console.log("nameEl:", nameEl);
-        console.log("phoneEl:", phoneEl);
-        console.log("dateEl:", dateEl);
-        console.log("msgEl:", msgEl);
-
-        // Если какой-то элемент не найден — сразу выходим
         if (!nameEl || !phoneEl || !dateEl || !msgEl) {
           console.error("Один из инпутов не найден по id");
           return;
@@ -527,6 +624,7 @@ setInterval(loadBookings,20000);
           phone: phoneEl.value,
           day:   dateEl.value,
           message:   msgEl.value,
+          time:   timeEl.value,
         };
          try {
     const res = await fetch("http://127.0.0.1:8000/data", {
