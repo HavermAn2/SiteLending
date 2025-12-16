@@ -1,5 +1,5 @@
 About project: Its a personal website for Inst(slavrada_official) 
-Which frameworks were used: FastAPI, TelegramAPI,TelegramWebhook. 
+Which technologies were used: FastAPI, TelegramAPI,TelegramWebhook. 
 Main feature: booking the dates and admin panel in Telegram.
 If you wanna test this site u must:
   1) Run frontend on the basic localhost:5500
